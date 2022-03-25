@@ -54,6 +54,7 @@
     </array>
     <key>LSApplicationQueriesSchemes</key>
     <array>
+        <string>https</string>
         <string>vk</string>
         <string>vk-share</string>
         <string>vkauthorize</string>

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insta_clone/responsive/responsive_layout_screen.dart';
 import 'package:insta_clone/responsive/web_screen_layout.dart';
+import 'package:insta_clone/screens/login_screen.dart';
 import 'package:insta_clone/utils/colors.dart';
 import 'package:vk_sdk/vk_sdk.dart';
 
@@ -15,14 +16,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Insta Clone',
-        theme: ThemeData.dark()
-            .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
-        home: ResponsiveLayout(
-          webScreenLayout: const WebScreenLayout(),
-          mobileScreenLayout: VkLoginLayout(),
-        ));
+      debugShowCheckedModeBanner: false,
+      title: 'Insta Clone',
+      theme: ThemeData.dark()
+          .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
+      // home: ResponsiveLayout(
+      //   webScreenLayout: const WebScreenLayout(),
+      //   mobileScreenLayout: VkLoginLayout(),
+      // ),
+      home: LoginScreen(),
+    );
   }
 }
 
