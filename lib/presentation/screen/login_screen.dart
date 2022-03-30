@@ -4,14 +4,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 const String _signUpUrl = 'https://vk.com/join';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
   void _launchURL() async {
     if (!await launch(_signUpUrl)) throw 'Could not launch $_signUpUrl';
   }

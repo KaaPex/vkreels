@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:insta_clone/responsive/responsive_layout_screen.dart';
-import 'package:insta_clone/responsive/web_screen_layout.dart';
-import 'package:insta_clone/screens/login_screen.dart';
+import 'package:insta_clone/presentation/router/app_router.dart';
 import 'package:insta_clone/utils/colors.dart';
 import 'package:vk_sdk/vk_sdk.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final AppRouter _appRouter = AppRouter();
+  MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -20,11 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'Insta Clone',
       theme: ThemeData.dark()
           .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
-      // home: ResponsiveLayout(
-      //   webScreenLayout: const WebScreenLayout(),
-      //   mobileScreenLayout: VkLoginLayout(),
-      // ),
-      home: LoginScreen(),
+      onGenerateRoute: _appRouter.onGenerateRoute,
     );
   }
 }
@@ -48,7 +43,6 @@ class _VkLoginLayoutState extends State<VkLoginLayout> {
   void initState() {
     super.initState();
 
-    print('Init VK Sdk');
     _getSdkVersion();
     _initSdk();
   }
@@ -90,7 +84,6 @@ class _VkLoginLayoutState extends State<VkLoginLayout> {
         ),
       ),
     );
-    ;
   }
 
   Widget _buildUserInfo(BuildContext context, VKUserProfile profile,
