@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:vk_reels/core/themes/app_theme.dart';
 import 'package:vk_reels/logic/cubit/internet_cubit.dart';
 import 'package:vk_reels/logic/cubit/settings_cubit.dart';
 import 'package:path_provider/path_provider.dart';
@@ -35,8 +36,7 @@ class MyApp extends StatelessWidget {
   final AppRouter appRouter;
   final Connectivity connectivity;
 
-  const MyApp({Key? key, required this.appRouter, required this.connectivity})
-      : super(key: key);
+  const MyApp({Key? key, required this.appRouter, required this.connectivity}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -44,8 +44,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<InternetCubit>(
-          create: (internetCubitContext) =>
-              InternetCubit(connectivity: connectivity),
+          create: (internetCubitContext) => InternetCubit(connectivity: connectivity),
         ),
         BlocProvider<SettingsCubit>(
           create: (settingsCubitContext) => SettingsCubit(),
@@ -56,8 +55,9 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'VK Reels',
-            theme: ThemeData.dark()
-                .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: state.appDarkMode ? ThemeMode.dark : ThemeMode.light,
             localizationsDelegates: const [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
             ],
             locale: state.locale,
             onGenerateRoute: appRouter.onGenerateRoute,
-            initialRoute: '/settings',
+            initialRoute: AppRouter.settings,
           );
         },
       ),
@@ -141,8 +141,7 @@ class _VkLoginLayoutState extends State<VkLoginLayout> {
     );
   }
 
-  Widget _buildUserInfo(BuildContext context, VKUserProfile profile,
-      VKAccessToken accessToken, String? email) {
+  Widget _buildUserInfo(BuildContext context, VKUserProfile profile, VKAccessToken accessToken, String? email) {
     final photoUrl = profile.photo200;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -9,6 +9,7 @@
     }
   },
   "settingsAppLanguage": "Язык приложения",
+  "settingsAppDarkMode": "Темная тема",
   "settingsAppNotification": "Разрешить уведомления",
   "@settingsAppNotification": {
     "description": ""

@@ -57,6 +57,19 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   SwitchListTile(
                     title: Text(
+                      t.settingsAppDarkMode,
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    value: state.appDarkMode,
+                    onChanged: (bool value) => settingsCubitContext
+                        .read<SettingsCubit>()
+                        .setAppDarkMode(value),
+                    // secondary: const Icon(Icons.lightbulb_outline),
+                  ),
+                  SwitchListTile(
+                    title: Text(
                       t.settingsAppNotification,
                       style: const TextStyle(
                         fontSize: 16.0,
