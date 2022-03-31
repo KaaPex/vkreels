@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:insta_clone/constants/enums.dart';
+import 'package:insta_clone/core/constants/enums.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';

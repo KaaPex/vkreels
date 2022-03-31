@@ -1,31 +1,69 @@
 import 'package:flutter/material.dart';
-import 'package:insta_clone/presentation/router/app_router.dart';
-import 'package:insta_clone/utils/colors.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:insta_clone/logic/cubit/internet_cubit.dart';
+import 'package:insta_clone/logic/cubit/settings_cubit.dart';
+import 'package:path_provider/path_provider.dart';
+
 import 'package:vk_sdk/vk_sdk.dart';
 
-void main() {
-  runApp(MyApp());
+import 'package:insta_clone/presentation/router/app_router.dart';
+import 'package:insta_clone/utils/colors.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final storage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
+
+  HydratedBlocOverrides.runZoned(
+    () => runApp(
+      MyApp(
+        appRouter: AppRouter(),
+        connectivity: Connectivity(),
+      ),
+    ),
+    storage: storage,
+  );
 }
 
 class MyApp extends StatelessWidget {
-  final AppRouter _appRouter = AppRouter();
-  MyApp({Key? key}) : super(key: key);
+  final AppRouter appRouter;
+  final Connectivity connectivity;
+
+  const MyApp({Key? key, required this.appRouter, required this.connectivity})
+      : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Insta Clone',
-      theme: ThemeData.dark()
-          .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
-      onGenerateRoute: _appRouter.onGenerateRoute,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<InternetCubit>(
+          create: (internetCubitContext) =>
+              InternetCubit(connectivity: connectivity),
+        ),
+        BlocProvider<SettingsCubit>(
+          create: (settingsCubitContext) => SettingsCubit(),
+        )
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Insta Clone',
+        theme: ThemeData.dark()
+            .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
+        onGenerateRoute: appRouter.onGenerateRoute,
+        initialRoute: '/settings',
+      ),
     );
   }
 }
 
 class VkLoginLayout extends StatefulWidget {
   final _plugin = VkSdk(debug: true);
+
   VkLoginLayout({Key? key}) : super(key: key);
 
   @override
