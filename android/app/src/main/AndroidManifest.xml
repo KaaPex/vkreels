@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kaapex.insta_clone">
+    package="com.kaapex.vk_reels">
     <queries>
         <intent>
             <action android:name="android.intent.action.VIEW" />
@@ -7,7 +7,7 @@
         </intent>
     </queries>
    <application
-        android:label="insta_clone"
+        android:label="vk_reels"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

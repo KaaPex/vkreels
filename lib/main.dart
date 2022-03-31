@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:insta_clone/logic/cubit/internet_cubit.dart';
-import 'package:insta_clone/logic/cubit/settings_cubit.dart';
+import 'package:vk_reels/logic/cubit/internet_cubit.dart';
+import 'package:vk_reels/logic/cubit/settings_cubit.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:vk_sdk/vk_sdk.dart';
 
-import 'package:insta_clone/presentation/router/app_router.dart';
-import 'package:insta_clone/utils/colors.dart';
+import 'package:vk_reels/presentation/router/app_router.dart';
+import 'package:vk_reels/core/constants/colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,13 +50,26 @@ class MyApp extends StatelessWidget {
           create: (settingsCubitContext) => SettingsCubit(),
         )
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Insta Clone',
-        theme: ThemeData.dark()
-            .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
-        onGenerateRoute: appRouter.onGenerateRoute,
-        initialRoute: '/settings',
+      child: BlocBuilder<SettingsCubit, SettingsState>(
+        builder: (_, state) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'VK Reels',
+            theme: ThemeData.dark()
+                .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en', ''), // English, no country code
+              Locale('ru'), // Russian, no country code
+            ],
+            // TODO: fix locale switch
+            locale: const Locale('en'),
+            onGenerateRoute: appRouter.onGenerateRoute,
+            initialRoute: '/settings',
+          );
+        },
       ),
     );
   }

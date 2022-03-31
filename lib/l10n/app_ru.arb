@@ -1,0 +1,16 @@
+{
+  "@@locale": "ru",
+  "settingsInputLanguage": "{locale, select, en {English} ru {Русский} other {-}}",
+  "@settingsInputLanguage": {
+    "placeholders": {
+      "locale": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsAppLanguage": "Язык приложения",
+  "settingsAppNotification": "Разрешить уведомления",
+  "@settingsAppNotification": {
+    "description": ""
+  }
+}

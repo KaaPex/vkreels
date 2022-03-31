@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:insta_clone/core/constants/enums.dart';
+import 'package:vk_reels/core/constants/enums.dart';
 import 'package:vk_sdk/vk_sdk.dart';
 
 class AuthenticationRepository {

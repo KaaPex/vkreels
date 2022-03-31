@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:insta_clone/core/constants/enums.dart';
-import 'package:insta_clone/logic/cubit/internet_cubit.dart';
+import 'package:vk_reels/core/constants/enums.dart';
+import 'package:vk_reels/logic/cubit/internet_cubit.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);

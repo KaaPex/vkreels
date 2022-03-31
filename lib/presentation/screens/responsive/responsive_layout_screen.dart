@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:insta_clone/utils/dimentions.dart';
+import 'package:vk_reels/core/constants/dimentions.dart';
 
 class ResponsiveLayout extends StatelessWidget {
   final Widget webScreenLayout;

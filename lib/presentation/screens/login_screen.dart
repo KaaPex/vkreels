@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:insta_clone/utils/colors.dart';
+import 'package:vk_reels/core/constants/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 const String _signUpUrl = 'https://vk.com/join';
