@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,13 +60,15 @@ class MyApp extends StatelessWidget {
                 .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
             localizationsDelegates: const [
               AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: const [
               Locale('en', ''), // English, no country code
-              Locale('ru'), // Russian, no country code
+              Locale('ru', ''), // Russian, no country code
             ],
-            // TODO: fix locale switch
-            locale: const Locale('en'),
+            locale: state.locale,
             onGenerateRoute: appRouter.onGenerateRoute,
             initialRoute: '/settings',
           );

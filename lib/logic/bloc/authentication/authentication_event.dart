@@ -15,7 +15,7 @@ class AppStarted extends AuthenticationEvent {
 class AuthenticationLoginRequested extends AuthenticationEvent {
   final String token;
 
-  AuthenticationLoginRequested({required this.token});
+  const AuthenticationLoginRequested({required this.token});
 
   @override
   String toString() => 'AuthenticationLogin { token: $token }';
