@@ -6,6 +6,10 @@ import 'package:vk_reels/logic/cubit/internet_cubit.dart';
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
 
+  static Route route() {
+    return MaterialPageRoute<void>(builder: (_) => const MainScreen());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,16 +23,14 @@ class MainScreen extends StatelessWidget {
           children: [
             BlocBuilder<InternetCubit, InternetState>(
               builder: (context, state) {
-                if (state is InternetConnected &&
-                    state.connectionType == ConnectionType.Wifi) {
+                if (state is InternetConnected && state.connectionType == ConnectionType.Wifi) {
                   return Text(
                     'Wi-Fi',
                     style: Theme.of(context).textTheme.headline3?.copyWith(
                           color: Colors.green,
                         ),
                   );
-                } else if (state is InternetConnected &&
-                    state.connectionType == ConnectionType.Mobile) {
+                } else if (state is InternetConnected && state.connectionType == ConnectionType.Mobile) {
                   return Text(
                     'Mobile',
                     style: Theme.of(context).textTheme.headline3?.copyWith(

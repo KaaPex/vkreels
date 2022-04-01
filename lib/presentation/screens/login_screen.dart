@@ -7,6 +7,10 @@ const String _signUpUrl = 'https://vk.com/join';
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
+  static Route route() {
+    return MaterialPageRoute<void>(builder: (_) => const LoginScreen());
+  }
+
   void _launchURL() async {
     if (!await launch(_signUpUrl)) throw 'Could not launch $_signUpUrl';
   }

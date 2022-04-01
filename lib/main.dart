@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:vk_reels/core/themes/app_theme.dart';
-import 'package:vk_reels/logic/cubit/internet_cubit.dart';
-import 'package:vk_reels/logic/cubit/settings_cubit.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:vk_sdk/vk_sdk.dart';
 
-import 'package:vk_reels/presentation/router/app_router.dart';
+import 'app.dart';
 import 'data/repository/vk_sdk_repository.dart';
 
 void main() async {
@@ -26,211 +20,11 @@ void main() async {
 
   HydratedBlocOverrides.runZoned(
     () => runApp(
-      MyApp(
-        appRouter: AppRouter(),
+      App(
         connectivity: Connectivity(),
         vkSdkRepository: vkSdkRepository,
       ),
     ),
     storage: storage,
   );
-}
-
-class MyApp extends StatelessWidget {
-  final AppRouter appRouter;
-  final Connectivity connectivity;
-  final VkSdkRepository vkSdkRepository;
-
-  const MyApp({Key? key, required this.appRouter, required this.connectivity, required this.vkSdkRepository})
-      : super(key: key);
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-      value: vkSdkRepository,
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider<InternetCubit>(
-            create: (internetCubitContext) => InternetCubit(connectivity: connectivity),
-          ),
-          BlocProvider<SettingsCubit>(
-            create: (settingsCubitContext) => SettingsCubit(),
-          )
-        ],
-        child: BlocBuilder<SettingsCubit, SettingsState>(
-          buildWhen: (previousState, state) {
-            // rebuild if only theme or locale settings is changed
-            return previousState.appDarkMode != state.appDarkMode || previousState.locale != state.locale;
-          },
-          builder: (_, state) {
-            return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'VK Reels',
-              theme: AppTheme.lightTheme,
-              darkTheme: AppTheme.darkTheme,
-              themeMode: state.appDarkMode ? ThemeMode.dark : ThemeMode.light,
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: const [
-                Locale('en', ''), // English, no country code
-                Locale('ru', ''), // Russian, no country code
-              ],
-              locale: state.locale,
-              onGenerateRoute: appRouter.onGenerateRoute,
-              initialRoute: AppRouter.settings,
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class VkLoginLayout extends StatefulWidget {
-  final _plugin = VkSdk(debug: true);
-
-  VkLoginLayout({Key? key}) : super(key: key);
-
-  @override
-  State<VkLoginLayout> createState() => _VkLoginLayoutState();
-}
-
-class _VkLoginLayoutState extends State<VkLoginLayout> {
-  String? _sdkVersion;
-  VKAccessToken? _token;
-  VKUserProfile? _profile;
-  String? _email;
-  bool _sdkInitialized = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _getSdkVersion();
-    _initSdk();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final token = _token;
-    final profile = _profile;
-    final isLogin = token != null;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login via VK example'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 8.0),
-        child: Builder(
-          builder: (context) => Center(
-            child: Column(
-              children: <Widget>[
-                if (_sdkVersion != null) Text('SDK v$_sdkVersion'),
-                if (token != null && profile != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: _buildUserInfo(context, profile, token, _email),
-                  ),
-                isLogin
-                    ? OutlinedButton(
-                        child: const Text('Log Out'),
-                        onPressed: _onPressedLogOutButton,
-                      )
-                    : OutlinedButton(
-                        child: const Text('Log In'),
-                        onPressed: () => _onPressedLogInButton(context),
-                      ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildUserInfo(BuildContext context, VKUserProfile profile, VKAccessToken accessToken, String? email) {
-    final photoUrl = profile.photo200;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('User: '),
-        Text(
-          '${profile.firstName} ${profile.lastName}',
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        Text(
-          'Online: ${profile.online}, Online mobile: ${profile.onlineMobile}',
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        if (photoUrl != null) Image.network(photoUrl),
-        const Text('AccessToken: '),
-        Text(
-          accessToken.token,
-          softWrap: true,
-        ),
-        const Text('Email: '),
-        Text(
-          accessToken.email ?? '',
-          softWrap: true,
-        ),
-        Text('Created: ${accessToken.created}'),
-        if (email != null) Text('Email: $email'),
-      ],
-    );
-  }
-
-  Future<void> _onPressedLogInButton(BuildContext context) async {
-    final res = await widget._plugin.logIn(scope: [
-      VKScope.email,
-    ]);
-
-    if (res.isError) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Log In failed: ${res.asError!.error}'),
-        ),
-      );
-    } else {
-      final loginResult = res.asValue!.value;
-      if (!loginResult.isCanceled) await _updateLoginInfo();
-    }
-  }
-
-  Future<void> _onPressedLogOutButton() async {
-    await widget._plugin.logOut();
-    await _updateLoginInfo();
-  }
-
-  Future<void> _initSdk() async {
-    await widget._plugin.initSdk();
-    _sdkInitialized = true;
-    await _updateLoginInfo();
-  }
-
-  Future<void> _getSdkVersion() async {
-    final sdkVersion = await VkSdk.sdkVersion;
-    setState(() {
-      _sdkVersion = sdkVersion;
-    });
-  }
-
-  Future<void> _updateLoginInfo() async {
-    if (!_sdkInitialized) return;
-
-    final plugin = widget._plugin;
-    final token = await plugin.accessToken;
-
-    final profileRes = token != null ? await plugin.getUserProfile() : null;
-
-    setState(() {
-      _token = token;
-      _profile = profileRes?.asValue?.value;
-    });
-  }
 }

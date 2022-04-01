@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:vk_reels/presentation/screens/login_screen.dart';
-
-import '../screens/settings_screen.dart';
-import '../screens/main_screen.dart';
+import '../page/logo_page.dart';
+import '../screens/screens.dart';
 
 class AppRouter {
-  static const String home = '/';
+  static const String main = '/';
   static const String settings = '/settings';
   static const String login = 'login';
+  static const String logo = 'logo';
 
-  Route onGenerateRoute(RouteSettings routeSetings) {
-    switch (routeSetings.name) {
+  Route onGenerateRoute(RouteSettings routeSettings) {
+    switch (routeSettings.name) {
       case login:
-        return MaterialPageRoute(builder: (_) => const LoginScreen());
+        return LoginScreen.route();
       case settings:
-        return MaterialPageRoute(builder: (_) => const SettingsScreen());
-      case home:
+        return SettingsScreen.route();
+      case main:
+        return MainScreen.route();
+      case logo:
       default:
-        return MaterialPageRoute(builder: (_) => const MainScreen());
+        return LogoPage.route();
     }
   }
 }

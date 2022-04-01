@@ -6,6 +6,10 @@ import 'package:vk_reels/logic/cubit/settings_cubit.dart';
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
+  static Route route() {
+    return MaterialPageRoute<void>(builder: (_) => const SettingsScreen());
+  }
+
   @override
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context)!;
@@ -49,9 +53,7 @@ class SettingsScreen extends StatelessWidget {
                             value: 'ru',
                           ),
                         ],
-                        onChanged: (String? value) => settingsCubitContext
-                            .read<SettingsCubit>()
-                            .setAppLocale(value!),
+                        onChanged: (String? value) => settingsCubitContext.read<SettingsCubit>().setAppLocale(value!),
                       ),
                     ],
                   ),
@@ -63,9 +65,7 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ),
                     value: state.appDarkMode,
-                    onChanged: (bool value) => settingsCubitContext
-                        .read<SettingsCubit>()
-                        .setAppDarkMode(value),
+                    onChanged: (bool value) => settingsCubitContext.read<SettingsCubit>().setAppDarkMode(value),
                     // secondary: const Icon(Icons.lightbulb_outline),
                   ),
                   SwitchListTile(
@@ -76,9 +76,7 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ),
                     value: state.appNotifications,
-                    onChanged: (bool value) => settingsCubitContext
-                        .read<SettingsCubit>()
-                        .setAppNotification(value),
+                    onChanged: (bool value) => settingsCubitContext.read<SettingsCubit>().setAppNotification(value),
                     // secondary: const Icon(Icons.lightbulb_outline),
                   )
                 ],
