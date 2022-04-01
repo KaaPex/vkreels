@@ -11,3 +11,13 @@ class LoginButtonPressed extends LoginEvent {
   @override
   String toString() => 'LoginButtonPressed';
 }
+
+class LogoutButtonPressed extends LoginEvent {
+  @override
+  String toString() => 'LogoutButtonPressed';
+}
+
+class LoginCancelled extends LoginEvent {
+  @override
+  String toString() => 'LoginCancelled';
+}

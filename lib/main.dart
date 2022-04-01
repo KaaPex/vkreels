@@ -12,7 +12,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:vk_sdk/vk_sdk.dart';
 
 import 'package:vk_reels/presentation/router/app_router.dart';
-import 'package:vk_reels/core/constants/colors.dart';
+import 'data/repository/vk_sdk_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,11 +21,15 @@ void main() async {
     storageDirectory: await getApplicationDocumentsDirectory(),
   );
 
+  final vkSdkRepository = VkSdkRepository(vkSdk: VkSdk(debug: true));
+  await vkSdkRepository.init();
+
   HydratedBlocOverrides.runZoned(
     () => runApp(
       MyApp(
         appRouter: AppRouter(),
         connectivity: Connectivity(),
+        vkSdkRepository: vkSdkRepository,
       ),
     ),
     storage: storage,
@@ -35,44 +39,53 @@ void main() async {
 class MyApp extends StatelessWidget {
   final AppRouter appRouter;
   final Connectivity connectivity;
+  final VkSdkRepository vkSdkRepository;
 
-  const MyApp({Key? key, required this.appRouter, required this.connectivity}) : super(key: key);
+  const MyApp({Key? key, required this.appRouter, required this.connectivity, required this.vkSdkRepository})
+      : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<InternetCubit>(
-          create: (internetCubitContext) => InternetCubit(connectivity: connectivity),
+    return RepositoryProvider.value(
+      value: vkSdkRepository,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<InternetCubit>(
+            create: (internetCubitContext) => InternetCubit(connectivity: connectivity),
+          ),
+          BlocProvider<SettingsCubit>(
+            create: (settingsCubitContext) => SettingsCubit(),
+          )
+        ],
+        child: BlocBuilder<SettingsCubit, SettingsState>(
+          buildWhen: (previousState, state) {
+            // rebuild if only theme or locale settings is changed
+            return previousState.appDarkMode != state.appDarkMode || previousState.locale != state.locale;
+          },
+          builder: (_, state) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'VK Reels',
+              theme: AppTheme.lightTheme,
+              darkTheme: AppTheme.darkTheme,
+              themeMode: state.appDarkMode ? ThemeMode.dark : ThemeMode.light,
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: const [
+                Locale('en', ''), // English, no country code
+                Locale('ru', ''), // Russian, no country code
+              ],
+              locale: state.locale,
+              onGenerateRoute: appRouter.onGenerateRoute,
+              initialRoute: AppRouter.settings,
+            );
+          },
         ),
-        BlocProvider<SettingsCubit>(
-          create: (settingsCubitContext) => SettingsCubit(),
-        )
-      ],
-      child: BlocBuilder<SettingsCubit, SettingsState>(
-        builder: (_, state) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'VK Reels',
-            theme: AppTheme.lightTheme,
-            darkTheme: AppTheme.darkTheme,
-            themeMode: state.appDarkMode ? ThemeMode.dark : ThemeMode.light,
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [
-              Locale('en', ''), // English, no country code
-              Locale('ru', ''), // Russian, no country code
-            ],
-            locale: state.locale,
-            onGenerateRoute: appRouter.onGenerateRoute,
-            initialRoute: AppRouter.settings,
-          );
-        },
       ),
     );
   }

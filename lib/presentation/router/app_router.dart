@@ -7,7 +7,7 @@ import '../screens/main_screen.dart';
 class AppRouter {
   static const String home = '/';
   static const String settings = '/settings';
-  static const String login = '/login';
+  static const String login = 'login';
 
   Route onGenerateRoute(RouteSettings routeSetings) {
     switch (routeSetings.name) {

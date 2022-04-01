@@ -15,18 +15,15 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
       );
 
   @override
-  Map<String, dynamic>? toJson(SettingsState state) => <String, dynamic>{
+  Map<String, dynamic> toJson(SettingsState state) => <String, dynamic>{
         'locale': state.locale.languageCode,
         'appDarkMode': state.appDarkMode,
         'appNotifications': state.appNotifications,
       };
 
-  void setAppLocale(String value) => emit(
-      SettingsState(Locale(value), state.appDarkMode, state.appNotifications));
+  void setAppLocale(String value) => emit(SettingsState(Locale(value), state.appDarkMode, state.appNotifications));
 
-  void setAppDarkMode(bool value) =>
-      emit(SettingsState(state.locale, value, state.appNotifications));
+  void setAppDarkMode(bool value) => emit(SettingsState(state.locale, value, state.appNotifications));
 
-  void setAppNotification(bool value) =>
-      emit(SettingsState(state.locale, state.appDarkMode, value));
+  void setAppNotification(bool value) => emit(SettingsState(state.locale, state.appDarkMode, value));
 }

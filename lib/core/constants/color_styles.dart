@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
 import 'colors.dart';
@@ -42,6 +43,20 @@ class VkText {
   static Style get linkHightlightedBackground => const Style(dark: sky300, light: black);
   static Style get actionCounter => const Style(dark: gray300, light: steelGray400);
 }
+
+class VKIcon {
+  static Style get medium => const Style(dark: gray400, light: steelGray400);
+  static Style get secondary => const Style(dark: gray500, light: steelGray300);
+  static Style get tertiary => const Style(dark: gray600, light: steelGray150);
+  static Style get outlineMedium => const Style(dark: gray300, light: steelGray400);
+  static Style get outlineSecondary => const Style(dark: gray400, light: steelGray300);
+  static Style get alphaPlaceholder => const Style(dark: gray100, light: Colors.white);
+  static Style get mediumAlpha => const Style(dark: whiteAlpha48, light: blackAlpha48);
+  static Style get secondaryAlpha => const Style(dark: whiteAlpha36, light: blackAlpha36);
+  static Style get tertiaryAlpha => const Style(dark: whiteAlpha24, light: blackAlpha24);
+}
+
+class VKCommon {}
 
 class VkContent {
   static Style get tintForeground => const Style(dark: gray400, light: gray450);
