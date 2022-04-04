@@ -33,7 +33,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     AuthenticationStatusChanged event,
     Emitter<AuthenticationState> emit,
   ) async {
-    print(event);
     switch (event.status) {
       case AuthenticationStatus.unauthenticated:
         return emit(const AuthenticationState.unauthenticated());

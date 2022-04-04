@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vk_reels/core/constants/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:vk_reels/data/repository/vk_sdk_repository.dart';
+import 'package:vk_reels/logic/bloc/login/login_bloc.dart';
 
 const String _signUpUrl = 'https://vk.com/join';
 
@@ -48,21 +51,30 @@ class LoginScreen extends StatelessWidget {
                 height: 64,
               ),
               // login button
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  child: const Text('Log in'),
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 12.0),
-                  decoration: const ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(4),
+              BlocProvider(
+                create: (context) => LoginBloc(vkSdkRepository: context.read<VkSdkRepository>()),
+                child: BlocBuilder<LoginBloc, LoginState>(
+                  builder: (context, state) {
+                    return InkWell(
+                      onTap: () {
+                        context.read<LoginBloc>().add(const LoginButtonPressed());
+                      },
+                      child: Container(
+                        child: const Text('Log in'),
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(vertical: 12.0),
+                        decoration: const ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(4),
+                            ),
+                          ),
+                          color: blueColor,
+                        ),
                       ),
-                    ),
-                    color: blueColor,
-                  ),
+                    );
+                  },
                 ),
               ),
               const SizedBox(

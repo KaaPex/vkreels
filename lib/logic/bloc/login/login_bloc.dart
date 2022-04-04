@@ -1,20 +1,34 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:vk_sdk/vk_sdk.dart';
-
-import '../authentication/authentication_bloc.dart';
+import 'package:vk_reels/data/repository/vk_sdk_repository.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final VkSdk vkSdk;
-  final AuthenticationBloc authenticationBloc;
+  final VkSdkRepository _vkSdkRepository;
 
   LoginBloc({
-    required this.vkSdk,
-    required this.authenticationBloc,
-  }) : super(LoginInitial());
+    required VkSdkRepository vkSdkRepository,
+  })  : _vkSdkRepository = vkSdkRepository,
+        super(LoginInitial()) {
+    on<LoginButtonPressed>(_onLoginButtonPressed);
+    on<LogoutButtonPressed>(_onLogoutButtonPressed);
+  }
 
-  LoginState get initialState => LoginInitial();
+  void _onLoginButtonPressed(LoginButtonPressed event, Emitter<LoginState> emit) async {
+    try {
+      await _vkSdkRepository.logIn();
+      emit(LoginLoading());
+    } catch (error) {
+      emit(LoginFailure(error: error.toString()));
+    }
+  }
+
+  void _onLogoutButtonPressed(LogoutButtonPressed event, Emitter<LoginState> emit) async {
+    try {
+      await _vkSdkRepository.logOut();
+      emit(LoginInitial());
+    } catch (_) {}
+  }
 }

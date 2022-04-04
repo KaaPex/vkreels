@@ -7,6 +7,7 @@ import 'package:vk_sdk/vk_sdk.dart';
 
 import 'app.dart';
 import 'data/repository/vk_sdk_repository.dart';
+import 'logic/debug/app_observer_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,5 +27,6 @@ void main() async {
       ),
     ),
     storage: storage,
+    blocObserver: AppBlocObserver(),
   );
 }

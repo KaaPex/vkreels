@@ -8,6 +8,8 @@ abstract class LoginEvent extends Equatable {
 }
 
 class LoginButtonPressed extends LoginEvent {
+  const LoginButtonPressed();
+
   @override
   String toString() => 'LoginButtonPressed';
 }

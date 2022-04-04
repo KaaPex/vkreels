@@ -10,7 +10,6 @@ import 'package:vk_reels/logic/cubit/settings_cubit.dart';
 import 'package:vk_reels/presentation/router/app_router.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'data/repository/vk_sdk_repository.dart';
-import 'presentation/screens/screens.dart';
 
 class App extends StatelessWidget {
   final Connectivity connectivity;
@@ -80,6 +79,7 @@ class _AppViewState extends State<AppView> {
             Locale('ru', ''), // Russian, no country code
           ],
           locale: state.locale,
+          navigatorKey: _navigatorKey,
           onGenerateRoute: widget.appRouter.onGenerateRoute,
           initialRoute: AppRouter.logo,
           builder: (context, child) {
@@ -87,14 +87,14 @@ class _AppViewState extends State<AppView> {
               listener: (context, state) {
                 switch (state.status) {
                   case AuthenticationStatus.authenticated:
-                    _navigator.pushAndRemoveUntil<void>(
-                      MainScreen.route(),
+                    _navigator.pushNamedAndRemoveUntil<void>(
+                      AppRouter.main,
                       (route) => false,
                     );
                     break;
                   case AuthenticationStatus.unauthenticated:
-                    _navigator.pushAndRemoveUntil<void>(
-                      LoginScreen.route(),
+                    _navigator.pushNamedAndRemoveUntil<void>(
+                      AppRouter.login,
                       (route) => false,
                     );
                     break;

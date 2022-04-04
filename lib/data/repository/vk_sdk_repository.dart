@@ -18,15 +18,17 @@ class VkSdkRepository {
   }
 
   Stream<AuthenticationStatus> get status async* {
-    yield AuthenticationStatus.unknown;
+    // delay for to show logo page
+    await Future<void>.delayed(const Duration(seconds: 1));
+    if (!_sdkInitialized) yield AuthenticationStatus.unknown;
+    final bool isLoggedIn = await VkSdk.isLoggedIn;
+    yield isLoggedIn ? AuthenticationStatus.authenticated : AuthenticationStatus.unauthenticated;
     yield* _controller.stream;
   }
 
   Future<VKUserProfile?> getUserProfile() async {
     if (!_sdkInitialized) return null;
-
     final profileRes = await VkSdkRepository.isLoggedIn ? await _vkSdk.getUserProfile() : null;
-
     return profileRes?.asValue?.value;
   }
 
