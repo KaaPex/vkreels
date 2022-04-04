@@ -61,3 +61,14 @@ class VKCommon {}
 class VkContent {
   static Style get tintForeground => const Style(dark: gray400, light: gray450);
 }
+
+class VKTabBar {
+  static Style get inactiveIcon => const Style(dark: gray500, light: steelGray300);
+  static Style get activeIcon => const Style(dark: white, light: azure350);
+  static Style get background => const Style(dark: gray800, light: gray020);
+  static Style get tabletActiveIcon => const Style(dark: sky300, light: azure350);
+  static Style get tabletBackground => const Style(dark: gray850, light: gray020);
+  static Style get tabletInactiveIcon => const Style(dark: gray500, light: steelGray300);
+  static Style get tabletTextPrimary => const Style(dark: gray100, light: black);
+  static Style get tabletTextSecondary => const Style(dark: gray500, light: gray400);
+}

@@ -45,6 +45,7 @@ dependencies:
   hydrated_bloc: ^8.1.0
   path_provider: ^2.0.9
   intl: ^0.17.0
+  image_picker: ^0.8.4+11
 
 dev_dependencies:
   flutter_test:
@@ -104,3 +105,9 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+
+  fonts:
+    - family:  CustomIcons
+      fonts:
+        - asset: fonts/CustomIcons.ttf

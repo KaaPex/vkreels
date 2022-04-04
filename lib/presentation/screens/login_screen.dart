@@ -36,7 +36,7 @@ class LoginScreen extends StatelessWidget {
               // logo image
               Image.asset(
                 'assets/diamond.png',
-                color: primaryColor,
+                color: Theme.of(context).primaryColor,
                 height: 64.0,
               ),
               const SizedBox(

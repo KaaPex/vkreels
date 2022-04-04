@@ -61,5 +61,11 @@
     </array>
     <key>VKAppId</key>
     <string>8110578</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Photo Library Usage</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Camera Usage</string>
+    <key>NSMicrophoneUsageDescriptio</key>
+    <string>Microphone Usage</string>
 </dict>
 </plist>

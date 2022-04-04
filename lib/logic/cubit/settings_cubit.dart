@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:vk_reels/core/themes/app_theme.dart';
 
 part 'settings_state.dart';
 
@@ -23,7 +24,10 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
 
   void setAppLocale(String value) => emit(SettingsState(Locale(value), state.appDarkMode, state.appNotifications));
 
-  void setAppDarkMode(bool value) => emit(SettingsState(state.locale, value, state.appNotifications));
+  void setAppDarkMode(bool value) {
+    AppTheme.setStatusBarAndNavigationBarColors(value);
+    emit(SettingsState(state.locale, value, state.appNotifications));
+  }
 
   void setAppNotification(bool value) => emit(SettingsState(state.locale, state.appDarkMode, value));
 }

@@ -4,6 +4,11 @@ import '../screens/screens.dart';
 
 class AppRouter {
   static const String main = '/';
+  static const String story = '/story';
+  static const String search = '/search';
+  static const String addStory = '/addStory';
+  static const String favorites = '/favorites';
+  static const String profile = '/profile';
   static const String settings = '/settings';
   static const String login = 'login';
   static const String logo = 'logo';
