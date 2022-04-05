@@ -6,6 +6,8 @@ import 'package:vk_reels/logic/cubit/settings_cubit.dart';
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
+  static const routeName = '/settings';
+
   static Route route() {
     return MaterialPageRoute<void>(builder: (_) => const SettingsScreen());
   }

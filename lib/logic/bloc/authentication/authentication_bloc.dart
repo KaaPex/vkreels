@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:vk_reels/core/constants/enums.dart';
 import 'package:vk_reels/data/repository/vk_sdk_repository.dart';
-import 'package:vk_sdk/vk_sdk.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
@@ -35,18 +34,14 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   ) async {
     switch (event.status) {
       case AuthenticationStatus.unauthenticated:
-        return emit(const AuthenticationState.unauthenticated());
+        emit(const AuthenticationState.unauthenticated());
+        break;
       case AuthenticationStatus.authenticated:
-        final VKUserProfile? user;
-        try {
-          user = await _vkSdkRepository.getUserProfile();
-          return emit(
-              user != null ? AuthenticationState.authenticated(user) : const AuthenticationState.unauthenticated());
-        } catch (_) {
-          return emit(const AuthenticationState.unauthenticated());
-        }
+        final userId = await VkSdkRepository.userId;
+        emit(userId != null ? AuthenticationState.authenticated(userId) : const AuthenticationState.unauthenticated());
+        break;
       default:
-        return emit(const AuthenticationState.unknown());
+        emit(const AuthenticationState.unknown());
     }
   }
 }

@@ -6,7 +6,7 @@ import 'package:vk_reels/presentation/router/app_router.dart';
 part 'navigation_state.dart';
 
 class NavigationCubit extends Cubit<NavigationState> {
-  NavigationCubit() : super(const NavigationOpenStory());
+  NavigationCubit() : super(const NavigationOpenStories());
 
   void navigate(String value) {
     switch (value) {
@@ -22,9 +22,9 @@ class NavigationCubit extends Cubit<NavigationState> {
       case AppRouter.profile:
         emit(const NavigationOpenProfile());
         break;
-      case AppRouter.story:
+      case AppRouter.stories:
       default:
-        emit(const NavigationOpenStory());
+        emit(const NavigationOpenStories());
     }
   }
 }

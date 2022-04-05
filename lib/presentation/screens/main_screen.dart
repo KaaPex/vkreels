@@ -3,17 +3,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vk_reels/core/constants/enums.dart';
 import 'package:vk_reels/core/icons/custom_icons.dart';
+import 'package:vk_reels/data/repository/vk_sdk_repository.dart';
 import 'package:vk_reels/logic/bloc/authentication/authentication_bloc.dart';
+import 'package:vk_reels/logic/bloc/bloc.dart';
 import 'package:vk_reels/logic/cubit/internet_cubit.dart';
 import 'package:vk_reels/logic/cubit/navigation_cubit.dart';
+import 'package:vk_reels/presentation/pages/pages.dart';
 
 import '../router/app_router.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
+
+  static const routeName = '/';
 
   static Route route() {
     return MaterialPageRoute<void>(builder: (_) => const MainScreen());
+  }
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  late PageController pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    pageController.dispose();
   }
 
   String _getPageRoute(int page) {
@@ -28,7 +52,7 @@ class MainScreen extends StatelessWidget {
         return AppRouter.profile;
       case 0:
       default:
-        return AppRouter.story;
+        return AppRouter.stories;
     }
   }
 
@@ -42,7 +66,7 @@ class MainScreen extends StatelessWidget {
         return 3;
       case AppRouter.profile:
         return 4;
-      case AppRouter.story:
+      case AppRouter.stories:
       default:
         return 0;
     }
@@ -50,47 +74,52 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NavigationCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<NavigationCubit>(
+          create: (_) => NavigationCubit(),
+        ),
+        BlocProvider<ProfileBloc>(
+          create: (context) => ProfileBloc(vkSdkRepository: context.read<VkSdkRepository>()),
+        ),
+      ],
       child: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              BlocBuilder<AuthenticationBloc, AuthenticationState>(
-                builder: (context, state) {
-                  return Text(state.user.firstName);
-                },
-              ),
-              BlocBuilder<InternetCubit, InternetState>(
-                builder: (context, state) {
-                  if (state is InternetConnected && state.connectionType == ConnectionType.Wifi) {
-                    return Text(
-                      'Wi-Fi',
-                      style: Theme.of(context).textTheme.headline3?.copyWith(
-                            color: Colors.green,
-                          ),
-                    );
-                  } else if (state is InternetConnected && state.connectionType == ConnectionType.Mobile) {
-                    return Text(
-                      'Mobile',
-                      style: Theme.of(context).textTheme.headline3?.copyWith(
-                            color: Colors.red,
-                          ),
-                    );
-                  } else if (state is InternetDisconnected) {
-                    return Text(
-                      'Disconnected',
-                      style: Theme.of(context).textTheme.headline3?.copyWith(
-                            color: Colors.grey,
-                          ),
-                    );
-                  }
-                  return const CircularProgressIndicator();
-                },
-              ),
-            ],
-          ),
+        body: PageView(
+          children: [
+            const StoriesPage(),
+            Container(),
+            BlocBuilder<InternetCubit, InternetState>(
+              builder: (context, state) {
+                if (state is InternetConnected && state.connectionType == ConnectionType.Wifi) {
+                  return Text(
+                    'Wi-Fi',
+                    style: Theme.of(context).textTheme.headline3?.copyWith(
+                          color: Colors.green,
+                        ),
+                  );
+                } else if (state is InternetConnected && state.connectionType == ConnectionType.Mobile) {
+                  return Text(
+                    'Mobile',
+                    style: Theme.of(context).textTheme.headline3?.copyWith(
+                          color: Colors.red,
+                        ),
+                  );
+                } else if (state is InternetDisconnected) {
+                  return Text(
+                    'Disconnected',
+                    style: Theme.of(context).textTheme.headline3?.copyWith(
+                          color: Colors.grey,
+                        ),
+                  );
+                }
+                return const CircularProgressIndicator();
+              },
+            ),
+            Container(),
+            ProfilePage(id: context.read<AuthenticationBloc>().state.userId),
+          ],
+          controller: pageController,
+          // onPageChanged: onPageChanged,
         ),
         bottomNavigationBar: BlocBuilder<NavigationCubit, NavigationState>(
           builder: (context, state) {
@@ -134,6 +163,7 @@ class MainScreen extends StatelessWidget {
               onTap: (int page) {
                 final route = _getPageRoute(page);
                 context.read<NavigationCubit>().navigate(route);
+                pageController.jumpToPage(page);
               },
             );
           },

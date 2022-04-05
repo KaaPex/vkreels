@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
-class LogoPage extends StatelessWidget {
-  const LogoPage({Key? key}) : super(key: key);
+class LogoScreen extends StatelessWidget {
+  const LogoScreen({Key? key}) : super(key: key);
+
+  static const routeName = 'logo';
 
   static Route route() {
-    return MaterialPageRoute<void>(builder: (_) => const LogoPage());
+    return MaterialPageRoute<void>(builder: (_) => const LogoScreen());
   }
 
   @override

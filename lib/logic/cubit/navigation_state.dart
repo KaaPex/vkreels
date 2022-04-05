@@ -10,8 +10,8 @@ class NavigationState extends Equatable {
   List<Object> get props => [route];
 }
 
-class NavigationOpenStory extends NavigationState {
-  const NavigationOpenStory() : super(AppRouter.story);
+class NavigationOpenStories extends NavigationState {
+  const NavigationOpenStories() : super(AppRouter.stories);
 }
 
 class NavigationOpenSearch extends NavigationState {

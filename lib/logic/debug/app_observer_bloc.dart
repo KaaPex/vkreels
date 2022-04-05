@@ -4,7 +4,7 @@ import 'dart:developer' as developer;
 class AppBlocObserver extends BlocObserver {
   @override
   void onCreate(BlocBase bloc) {
-    developer.log('onCreate=========>', name: bloc.toString());
+    developer.log('onCreate', name: bloc.toString());
     super.onCreate(bloc);
   }
 
