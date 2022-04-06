@@ -62,6 +62,27 @@ class VkContent {
   static Style get tintForeground => const Style(dark: gray400, light: gray450);
 }
 
+class VKHeader {
+  static Style get alternateBackground => const Style(dark: gray800, light: white);
+  static Style get alternateTabActiveIndicator => const Style(dark: gray100, light: azure300);
+  static Style get alternateTabActiveText => const Style(dark: gray100, light: black);
+  static Style get alternateTabInactiveText => const Style(dark: gray500, light: steelGray300);
+  static Style get background => const Style(dark: gray900, light: white);
+  static Style get backgroundBeforeBlur => const Style(dark: grayA970, light: white);
+  static Style get backgroundBeforeBlurAlternate => const Style(dark: grayA970, light: white);
+  static Style get searchFieldBackground => const Style(dark: gray750, light: gray050);
+  static Style get searchFieldTint => const Style(dark: gray300, light: steelGray400);
+  static Style get tabActiveBackground => const Style(dark: gray600, light: clear);
+  static Style get tabActiveText => const Style(dark: gray100, light: black);
+  static Style get tabActiveIndicator => const Style(dark: sky300, light: azure300);
+  static Style get tabInactiveText => const Style(dark: gray500, light: steelGray300);
+  static Style get text => const Style(dark: gray100, light: black);
+  static Style get textAlternate => const Style(dark: gray100, light: black);
+  static Style get textSecondary => const Style(dark: whiteAlpha60, light: steelGray400);
+  static Style get tint => const Style(dark: gray100, light: azure300);
+  static Style get tintAlternate => const Style(dark: gray100, light: azure300);
+}
+
 class VKTabBar {
   static Style get inactiveIcon => const Style(dark: gray500, light: steelGray300);
   static Style get activeIcon => const Style(dark: white, light: azure350);

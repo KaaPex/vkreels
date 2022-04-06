@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vk_reels/core/constants/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vk_reels/data/repository/vk_sdk_repository.dart';
@@ -22,6 +23,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -62,7 +65,7 @@ class LoginScreen extends StatelessWidget {
                         context.read<LoginBloc>().add(const LoginButtonPressed());
                       },
                       child: Container(
-                        child: const Text('Log in'),
+                        child: Text(t.login),
                         width: double.infinity,
                         alignment: Alignment.center,
                         padding: const EdgeInsets.symmetric(vertical: 12.0),

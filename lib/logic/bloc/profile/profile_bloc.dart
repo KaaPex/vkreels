@@ -18,6 +18,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ProfileDataRequested>(_profileDataRequested);
   }
 
+  @override
+  Future<void> close() {
+    _vkSdkRepository.dispose();
+    return super.close();
+  }
+
   void _profileDataRequested(ProfileDataRequested event, Emitter<ProfileState> emit) async {
     emit(const ProfileState.loading());
 

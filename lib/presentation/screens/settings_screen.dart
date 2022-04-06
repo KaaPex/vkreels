@@ -17,6 +17,10 @@ class SettingsScreen extends StatelessWidget {
     var t = AppLocalizations.of(context)!;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text(t.settings),
+        centerTitle: false,
+      ),
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),

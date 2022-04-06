@@ -15,6 +15,7 @@ class AppTheme {
     iconTheme: IconThemeData(
       color: VKTabBar.activeIcon.light,
     ),
+    secondaryHeaderColor: VKHeader.alternateBackground.light,
     tabBarTheme: TabBarTheme(
       labelColor: VKTabBar.activeIcon.light,
       unselectedLabelColor: VKTabBar.inactiveIcon.light,
@@ -34,6 +35,7 @@ class AppTheme {
     iconTheme: IconThemeData(
       color: VKTabBar.activeIcon.dark,
     ),
+    secondaryHeaderColor: VKHeader.alternateBackground.dark,
     tabBarTheme: TabBarTheme(
       labelColor: VKTabBar.activeIcon.dark,
       unselectedLabelColor: VKTabBar.inactiveIcon.dark,

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:async/async.dart';
 import 'package:vk_sdk/vk_sdk.dart';
 
@@ -29,15 +28,58 @@ class VkSdkRepository {
   Future<Result<VKUserProfile?>> getUserProfile({int? userId}) async {
     if (!_sdkInitialized) return Result.value(VKUserProfile.empty);
 
-    if (userId == null) {
-      return await _vkSdk.getUserProfile();
-    } else {
-      final builder = VkSdk.api.createMethodCall('users.get');
-      builder.setValue('user_ids', userId);
-      builder.setValue('fields', 'online,photo_50,photo_100,photo_200');
-      final Result res = await builder.callMethod();
-      return Result.value(VKUserProfile.fromJson(res.asValue?.value[0].cast<String, dynamic>()));
+    try {
+      if (userId == null) {
+        return await _vkSdk.getUserProfile();
+      } else {
+        final builder = VkSdk.api.createMethodCall('users.get');
+        builder.setValue('user_ids', userId);
+        builder.setValue(
+            'fields', 'online,photo_50,photo_100,photo_200,counters,nickname,domain,screen_name,status,status_audio');
+        final Result res = await builder.callMethod();
+        final value = VKUserProfile.fromJson(res.asValue?.value[0].cast<String, dynamic>());
+        return Result.value(value);
+      }
+    } catch (error) {
+      return Result.error(error);
     }
+  }
+
+  Future<Result<VKWall?>> getUserPosts({int? userId, String? domain, int? count, int? offset}) async {
+    if (!_sdkInitialized) return Result.value(VKWall.empty);
+    const defaultCount = 10;
+
+    try {
+      final builder = VkSdk.api.createMethodCall('wall.get');
+      if (userId != null) {
+        builder.setValue('owner_id', userId);
+      }
+
+      if (domain != null) {
+        builder.setValue('domain', domain);
+      }
+
+      builder.setValue('count', count ?? defaultCount);
+
+      if (offset != null) {
+        builder.setValue('offset', offset);
+      }
+
+      final Result res = await builder.callMethod();
+      return Result.value(VKWall.fromJson(res.asValue?.value.cast<String, dynamic>()));
+    } catch (error) {
+      return Result.error(error);
+    }
+  }
+
+  Future<Result<List<VKUserProfile>>> getUserSubscriptions({int? userId}) async {
+    if (!_sdkInitialized) return Result.value(List.empty());
+
+    final builder = VkSdk.api.createMethodCall('users.getSubscriptions');
+    builder.setValue('user_id', userId);
+    final Result res = await builder.callMethod();
+
+    return Result.value(List.empty());
   }
 
   Future<void> logIn() async {

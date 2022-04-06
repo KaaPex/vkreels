@@ -8,10 +8,17 @@
       }
     }
   },
+  "settings": "Настройки",
   "settingsAppLanguage": "Язык приложения",
   "settingsAppDarkMode": "Темная тема",
   "settingsAppNotification": "Разрешить уведомления",
   "@settingsAppNotification": {
     "description": ""
-  }
+  },
+  "login": "Войти",
+  "profilePosts": "постов",
+  "profileNotes": "заметок",
+  "profileFollowers": "подписчиков",
+  "profileFollowing": "подписок",
+  "more": "...еще"
 }

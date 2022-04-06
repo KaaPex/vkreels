@@ -8,10 +8,17 @@
       }
     }
   },
+  "settings": "Settings",
   "settingsAppLanguage": "App Language",
   "settingsAppDarkMode": "Dark Theme",
   "settingsAppNotification": "Allow Notifications",
   "@settingsAppNotification": {
     "description": ""
-  }
+  },
+  "login": "Log in",
+  "profilePosts": "posts",
+  "profileNotes": "notes",
+  "profileFollowers": "followers",
+  "profileFollowing": "following",
+  "more": "...more"
 }

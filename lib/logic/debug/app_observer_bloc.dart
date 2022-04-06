@@ -10,7 +10,7 @@ class AppBlocObserver extends BlocObserver {
 
   @override
   void onChange(BlocBase bloc, Change change) {
-    developer.log(change.toString(), name: bloc.toString());
+    developer.log(change.hashCode.toString(), name: bloc.toString());
     super.onChange(bloc, change);
   }
 
@@ -32,6 +32,7 @@ class AppBlocObserver extends BlocObserver {
 
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
+    developer.log('Error', name: bloc.toString(), stackTrace: stackTrace, error: error);
     super.onError(bloc, error, stackTrace);
   }
 }
