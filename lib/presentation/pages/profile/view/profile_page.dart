@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vk_reels/core/icons/custom_icons.dart';
 import 'package:vk_reels/logic/bloc/bloc.dart';
 import 'package:vk_reels/logic/cubit/cubit.dart';
 import 'package:vk_reels/presentation/screens/screens.dart';
 import 'package:vk_reels/presentation/widgets/widgets.dart';
 
 class ProfilePage extends StatefulWidget {
-  final int? id;
-
   const ProfilePage({Key? key, this.id}) : super(key: key);
+
+  final int? id;
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -43,8 +44,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 appBar: AppBar(
                   title: Row(
                     children: [
-                      Icon(
-                          profile.isClosed != null && profile.isClosed == true ? Icons.lock : Icons.lock_open_outlined),
+                      Container(
+                        margin: const EdgeInsets.only(right: 3.0),
+                        child: Icon(
+                          profile.isClosed != null && profile.isClosed == true
+                              ? CustomIcons.lockOutline_16
+                              : CustomIcons.unlockOutline_16,
+                          size: 16,
+                        ),
+                      ),
                       Text('${profile.screenName ?? profile.userId}'),
                     ],
                   ),
@@ -68,14 +76,24 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           Row(
                             children: [
-                              CircleAvatar(
-                                backgroundImage: profile.photo100 != null ? NetworkImage(profile.photo100!) : null,
-                                radius: 40,
-                                child: profile.photo100 == null
-                                    ? const Icon(
-                                        Icons.person,
-                                      )
-                                    : null,
+                              Stack(
+                                children: [
+                                  Avatar(
+                                    radius: 35.0,
+                                    backgroundImage: profile.photo100 != null ? NetworkImage(profile.photo100!) : null,
+                                  ),
+                                  Positioned(
+                                    bottom: 3,
+                                    left: 55,
+                                    child: profile.online || profile.onlineMobile
+                                        ? Icon(
+                                            profile.online ? CustomIcons.onlineOutline_16 : CustomIcons.onlineMobile_16,
+                                            color: Colors.greenAccent,
+                                            size: 9,
+                                          )
+                                        : Container(),
+                                  )
+                                ],
                               ),
                               Expanded(
                                 flex: 1,
@@ -129,22 +147,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               ],
                             ),
                           ),
-                          const Divider(),
-                          BlocBuilder<WallCubit, WallState>(
-                            builder: (_, state) {
-                              if (state.posts.isEmpty) return Container();
-                              return PostWidget(post: state.posts[6]);
-                            },
-                          ),
                         ],
                       ),
                     ),
-                    // BlocBuilder<WallCubit, WallState>(
-                    //   builder: (_, state) {
-                    //     if (state.posts.isEmpty) return Container();
-                    //     return PostWidget(post: state.posts[7]);
-                    //   },
-                    // ),
+                    PostsList(id: widget.id),
                   ],
                 ),
               );

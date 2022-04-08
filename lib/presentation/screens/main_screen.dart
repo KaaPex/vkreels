@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vk_reels/core/constants/enums.dart';
 import 'package:vk_reels/core/icons/custom_icons.dart';
 import 'package:vk_reels/data/repository/vk_sdk_repository.dart';
+import 'package:vk_reels/logic/bloc/authentication/authentication_bloc.dart';
 import 'package:vk_reels/logic/bloc/bloc.dart';
 import 'package:vk_reels/logic/cubit/cubit.dart';
 import 'package:vk_reels/logic/cubit/internet_cubit.dart';
@@ -120,8 +121,8 @@ class _MainScreenState extends State<MainScreen> {
             ),
             Container(),
             // ProfilePage(id: context.read<AuthenticationBloc>().state.userId),
-            const ProfilePage(id: 844449),
-            // const ProfilePage(id: 2867087),
+            // const ProfilePage(id: 844449),
+            const ProfilePage(id: 2867087),
           ],
           controller: pageController,
           // onPageChanged: onPageChanged,

@@ -42,7 +42,9 @@ class _ExpandableTextState extends State<ExpandableText> {
               WidgetSpan(
                 alignment: ui.PlaceholderAlignment.top,
                 child: RichTextSpan(
-                  text: isExpanded ? widget.text : widget.text.substring(0, 30),
+                  text: isExpanded
+                      ? widget.text
+                      : widget.text.substring(0, widget.text.length >= 30 ? 30 : widget.text.length),
                 ),
               ),
               isExpanded

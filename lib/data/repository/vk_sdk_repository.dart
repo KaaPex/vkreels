@@ -45,12 +45,35 @@ class VkSdkRepository {
     }
   }
 
+  VKPost _fillGroupData(VKPost post, List<VKUserProfile?>? profiles, List<VKGroup?>? groups) {
+    final VKUserProfile? profile = profiles?.firstWhere(
+      (element) => element?.userId == post.ownerId.abs(),
+      orElse: () => null,
+    );
+    final VKGroup? group = groups?.firstWhere(
+      (element) => element?.id == post.ownerId.abs(),
+      orElse: () => null,
+    );
+
+    final List<VKPost> filledReposts = [];
+    post.copyHistory?.forEach((repost) => filledReposts.add(_fillGroupData(repost, profiles, groups)));
+
+    return post.copyWith(
+      profile: profile,
+      group: group,
+      copyHistory: filledReposts.isNotEmpty ? filledReposts : null,
+    );
+  }
+
   Future<Result<VKWall?>> getUserPosts({int? userId, String? domain, int? count, int? offset}) async {
     if (!_sdkInitialized) return Result.value(VKWall.empty);
     const defaultCount = 10;
 
     try {
       final builder = VkSdk.api.createMethodCall('wall.get');
+      builder.setValue('fields', 'attachments');
+      builder.setValue('extended', 1);
+      builder.setValue('fields', 'photo_50,screen_name');
       if (userId != null) {
         builder.setValue('owner_id', userId);
       }
@@ -66,7 +89,16 @@ class VkSdkRepository {
       }
 
       final Result res = await builder.callMethod();
-      return Result.value(VKWall.fromJson(res.asValue?.value.cast<String, dynamic>()));
+      final data = VKWall.fromJson(res.asValue?.value.cast<String, dynamic>());
+      // fill post profile and group data
+      final List<VKPost> filledItems = [];
+      for (var item in data.items) {
+        filledItems.add(
+          _fillGroupData(item, data.profiles, data.groups),
+        );
+      }
+
+      return Result.value(VKWall(data.count, filledItems));
     } catch (error) {
       return Result.error(error);
     }

@@ -20,10 +20,11 @@ class WallCubit extends Cubit<WallState> {
   }
 
   void getUserPosts(int? userId) async {
-    final result = await _vkSdkRepository.getUserPosts(userId: userId);
+    final result = await _vkSdkRepository.getUserPosts(userId: userId, offset: state.offset);
     final VKWall? wall = result.asValue?.value;
-    final List<VKPost> posts = List<VKPost>.from(state.posts);
-    posts.addAll(wall?.items ?? []);
-    emit(WallState(count: wall?.count ?? 0, offset: state.offset + (wall?.items.length ?? 0), posts: posts));
+    final int len = wall?.items.length ?? 0;
+    len == 0
+        ? emit(state.copyWith(hasReachedMax: true))
+        : emit(state.copyWith(count: wall?.count ?? 0, offset: state.offset + len, posts: wall?.items));
   }
 }

@@ -10,6 +10,7 @@ class AppTheme {
   static final lightTheme = ThemeData(
     brightness: Brightness.light,
     primaryColor: VkBackground.content.light,
+    primaryColorLight: VkBackground.contentTintBackground.light,
     backgroundColor: VkBackground.contentTintBackground.light,
     visualDensity: VisualDensity.adaptivePlatformDensity,
     iconTheme: IconThemeData(
@@ -30,6 +31,7 @@ class AppTheme {
   static final darkTheme = ThemeData(
     brightness: Brightness.dark,
     primaryColor: VkBackground.content.dark,
+    primaryColorDark: VkBackground.contentTintBackground.dark,
     backgroundColor: VkBackground.contentTintBackground.dark,
     visualDensity: VisualDensity.adaptivePlatformDensity,
     iconTheme: IconThemeData(
