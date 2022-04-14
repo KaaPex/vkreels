@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vk_reels/presentation/animation/expandable_text.dart';
+import 'images_carousel.dart';
 import 'widgets.dart';
 import 'package:vk_sdk/vk_sdk.dart';
 
@@ -77,19 +78,17 @@ class _PostCardState extends State<PostCard> {
     );
   }
 
-  Image? _getIImage(VKPost post) {
+  Widget? _getImage(VKPost post) {
     // TODO: decide with image index take
     if (post.attachments != null && post.attachments?.isNotEmpty == true) {
       final attachments = post.attachments;
       try {
-        final itemPhoto =
-            attachments?.firstWhere((element) => element?.type == VKAttachmentType.photo, orElse: () => null);
-        if (itemPhoto != null) {
-          final index = itemPhoto.photo!.sizes != null ? itemPhoto.photo!.sizes!.length - 1 : 0;
-          final String url = itemPhoto.photo!.sizes![index].url;
-          return Image.network(
-            url,
-            fit: BoxFit.cover,
+        final itemPhotos =
+            attachments?.where((element) => element?.type == VKAttachmentType.photo && element?.photo != null);
+        if (itemPhotos != null && itemPhotos.isNotEmpty) {
+          List<VKPhoto> photos = itemPhotos.map((item) => item?.photo!).toList().cast<VKPhoto>();
+          return ImagesCarousel(
+            photos: photos,
           );
         }
 
@@ -111,18 +110,16 @@ class _PostCardState extends State<PostCard> {
   }
 
   _buildPostContext(VKPost post) {
-    final postImage = _getIImage(post);
+    final postImage = _getImage(post);
 
     if (postImage == null && post.text != null) {
       final textSubstringLength = post.text!.length >= 45 ? 45 : post.text?.length;
       return Center(
-        child: Flexible(
-          child: Text(
-            post.text?.substring(0, textSubstringLength) ?? '',
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 32.0,
-            ),
+        child: Text(
+          post.text?.substring(0, textSubstringLength) ?? '',
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 32.0,
           ),
         ),
       );
