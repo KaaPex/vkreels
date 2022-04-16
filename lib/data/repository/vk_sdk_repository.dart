@@ -117,6 +117,8 @@ class VkSdkRepository {
   Future<void> logIn() async {
     final Result<VKLoginResult> res = await _vkSdk.logIn(scope: [
       VKScope.email,
+      VKScope.audio,
+      VKScope.video,
     ]);
 
     if (res.isError) {

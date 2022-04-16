@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vk_reels/presentation/animation/expandable_text.dart';
-import 'images_carousel.dart';
 import 'widgets.dart';
 import 'package:vk_sdk/vk_sdk.dart';
 
@@ -78,7 +77,7 @@ class _PostCardState extends State<PostCard> {
     );
   }
 
-  Widget? _getImage(VKPost post) {
+  Widget _getImage(VKPost post) {
     // TODO: decide with image index take
     if (post.attachments != null && post.attachments?.isNotEmpty == true) {
       final attachments = post.attachments;
@@ -106,15 +105,33 @@ class _PostCardState extends State<PostCard> {
         print(error);
       }
     }
-    return null;
+    return const SizedBox.shrink();
+  }
+
+  Widget _getPlayer(VKPost post) {
+    if (post.attachments != null && post.attachments?.isNotEmpty == true) {
+      final attachments = post.attachments;
+      final itemAudio =
+          attachments?.where((element) => element?.type == VKAttachmentType.audio && element?.audio != null);
+      if (itemAudio != null && itemAudio.isNotEmpty) {
+        List<VKAudio> files = itemAudio.map((item) => item?.audio!).toList().cast<VKAudio>();
+        return AudioPlayerWidget(
+          files: files,
+        );
+      }
+    }
+
+    return const SizedBox.shrink();
   }
 
   _buildPostContext(VKPost post) {
     final postImage = _getImage(post);
+    final postPlayer = _getPlayer(post);
 
-    if (postImage == null && post.text != null) {
+    Widget postText = const SizedBox.shrink();
+    if (postImage is SizedBox && post.text != null) {
       final textSubstringLength = post.text!.length >= 45 ? 45 : post.text?.length;
-      return Center(
+      postText = Center(
         child: Text(
           post.text?.substring(0, textSubstringLength) ?? '',
           textAlign: TextAlign.center,
@@ -124,7 +141,14 @@ class _PostCardState extends State<PostCard> {
         ),
       );
     }
-    return postImage;
+
+    return Stack(
+      children: [
+        postText,
+        postImage,
+        postPlayer,
+      ],
+    );
   }
 
   _buildPostText(VKPost post) {

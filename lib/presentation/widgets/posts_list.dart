@@ -20,6 +20,7 @@ class _PostsListState extends State<PostsList> {
   @override
   void initState() {
     super.initState();
+    context.read<WallCubit>().getUserPosts(widget.id);
     _scrollController.addListener(_onScroll);
   }
 

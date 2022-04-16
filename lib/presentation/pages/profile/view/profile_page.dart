@@ -21,10 +21,10 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     final userId = context.read<ProfileBloc>().state.profile.userId;
-    // if (userId != widget.id) {
-    context.read<ProfileBloc>().add(ProfileDataRequested(widget.id));
-    context.read<WallCubit>().getUserPosts(widget.id);
-    // }
+    if (userId != widget.id) {
+      context.read<ProfileBloc>().add(ProfileDataRequested(widget.id));
+      context.read<WallCubit>().getUserPosts(widget.id);
+    }
   }
 
   @override
