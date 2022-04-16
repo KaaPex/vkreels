@@ -1,6 +1,5 @@
 part of 'wall_cubit.dart';
 
-@immutable
 class WallState extends Equatable {
   const WallState({
     this.count = 0,

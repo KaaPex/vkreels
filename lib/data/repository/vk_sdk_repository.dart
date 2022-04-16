@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:async/async.dart';
 import 'package:vk_sdk/vk_sdk.dart';
 
@@ -99,6 +100,30 @@ class VkSdkRepository {
       }
 
       return Result.value(VKWall(data.count, filledItems));
+    } catch (error) {
+      return Result.error(error);
+    }
+  }
+
+  Future<Result<List<VKAudio>>> getAudioById(String audioIds) async {
+    if (!_sdkInitialized || audioIds == null || audioIds.isEmpty) {
+      return Result.value(List.empty());
+    }
+
+    try {
+      final builder = VkSdk.api.createMethodCall('audio.getById');
+      builder.setValue('audios', audioIds);
+      final Result res = await builder.callMethod();
+      if (res.isValue) {
+        final data = (res as List<dynamic>)
+            .map(
+              (item) => VKAudio.fromJson(item as Map<String, dynamic>),
+            )
+            .toList();
+        return Result.value(data);
+      } else {
+        return Result.error(res);
+      }
     } catch (error) {
       return Result.error(error);
     }

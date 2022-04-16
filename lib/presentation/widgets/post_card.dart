@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:vk_reels/logic/cubit/audio_cubit.dart';
 import 'package:vk_reels/presentation/animation/expandable_text.dart';
-import 'widgets.dart';
 import 'package:vk_sdk/vk_sdk.dart';
+
+import '../../data/repository/vk_sdk_repository.dart';
+import 'widgets.dart';
 
 class PostCard extends StatefulWidget {
   final VKPost post;
@@ -115,8 +119,15 @@ class _PostCardState extends State<PostCard> {
           attachments?.where((element) => element?.type == VKAttachmentType.audio && element?.audio != null);
       if (itemAudio != null && itemAudio.isNotEmpty) {
         List<VKAudio> files = itemAudio.map((item) => item?.audio!).toList().cast<VKAudio>();
-        return AudioPlayerWidget(
-          files: files,
+        return BlocProvider(
+          create: (context) => AudioCubit(vkSdkRepository: context.read<VkSdkRepository>())..getAudioFiles(files),
+          child: BlocBuilder<AudioCubit, AudioState>(
+            builder: (context, state) {
+              return AudioPlayerWidget(
+                files: state.files,
+              );
+            },
+          ),
         );
       }
     }
