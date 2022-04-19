@@ -119,16 +119,27 @@ class _PostCardState extends State<PostCard> {
           attachments?.where((element) => element?.type == VKAttachmentType.audio && element?.audio != null);
       if (itemAudio != null && itemAudio.isNotEmpty) {
         List<VKAudio> files = itemAudio.map((item) => item?.audio!).toList().cast<VKAudio>();
-        return BlocProvider(
-          create: (context) => AudioCubit(vkSdkRepository: context.read<VkSdkRepository>())..getAudioFiles(files),
-          child: BlocBuilder<AudioCubit, AudioState>(
-            builder: (context, state) {
-              return AudioPlayerWidget(
-                files: state.files,
-              );
-            },
+
+        return Positioned(
+          bottom: 5.0,
+          child: AudioPlayerWidget(
+            files: files,
           ),
         );
+
+        // return BlocProvider(
+        //   create: (context) => AudioCubit(vkSdkRepository: context.read<VkSdkRepository>())..getAudioFiles(files),
+        //   child: BlocBuilder<AudioCubit, AudioState>(
+        //     builder: (context, state) {
+        //       return Positioned(
+        //         bottom: 0,
+        //         child: AudioPlayerWidget(
+        //           files: state.files,
+        //         ),
+        //       );
+        //     },
+        //   ),
+        // );
       }
     }
 

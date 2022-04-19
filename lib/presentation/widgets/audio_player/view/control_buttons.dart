@@ -12,10 +12,15 @@ class ControlButtons extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        /// This StreamBuilder rebuilds whenever the player state changes, which
-        /// includes the playing/paused state and also the
-        /// loading/buffering/ready state. Depending on the state we show the
-        /// appropriate button or loading indicator.
+        StreamBuilder<SequenceState?>(
+          stream: player.sequenceStateStream,
+          builder: (context, snapshot) => IconButton(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            constraints: const BoxConstraints(),
+            icon: const Icon(Icons.skip_previous),
+            onPressed: player.hasPrevious ? player.seekToPrevious : null,
+          ),
+        ),
         StreamBuilder<PlayerState>(
           stream: player.playerStateStream,
           builder: (context, snapshot) {
@@ -25,30 +30,40 @@ class ControlButtons extends StatelessWidget {
             if (processingState == ProcessingState.loading || processingState == ProcessingState.buffering) {
               return Container(
                 margin: const EdgeInsets.all(8.0),
-                width: 64.0,
-                height: 64.0,
                 child: const CircularProgressIndicator(),
               );
             } else if (playing != true) {
               return IconButton(
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
                 icon: const Icon(Icons.play_arrow),
-                iconSize: 64.0,
                 onPressed: player.play,
               );
             } else if (processingState != ProcessingState.completed) {
               return IconButton(
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
                 icon: const Icon(Icons.pause),
-                iconSize: 64.0,
                 onPressed: player.pause,
               );
             } else {
               return IconButton(
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
                 icon: const Icon(Icons.replay),
-                iconSize: 64.0,
                 onPressed: () => player.seek(Duration.zero),
               );
             }
           },
+        ),
+        StreamBuilder<SequenceState?>(
+          stream: player.sequenceStateStream,
+          builder: (context, snapshot) => IconButton(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            constraints: const BoxConstraints(),
+            icon: const Icon(Icons.skip_next),
+            onPressed: player.hasNext ? player.seekToNext : null,
+          ),
         ),
       ],
     );

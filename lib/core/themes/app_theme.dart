@@ -26,6 +26,9 @@ class AppTheme {
       primaryColor: VkBackground.content.light,
       barBackgroundColor: VKTabBar.background.light,
     ),
+    sliderTheme: SliderThemeData(
+      thumbColor: VKButton.buttonCommerceForeground.light,
+    ),
   );
 
   static final darkTheme = ThemeData(
@@ -46,6 +49,9 @@ class AppTheme {
       brightness: Brightness.dark,
       primaryColor: VkBackground.content.dark,
       barBackgroundColor: VKTabBar.background.dark,
+    ),
+    sliderTheme: SliderThemeData(
+      thumbColor: VKButton.buttonCommerceForeground.dark,
     ),
   );
 

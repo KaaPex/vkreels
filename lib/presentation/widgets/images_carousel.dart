@@ -57,7 +57,7 @@ class _ImagesCarouselState extends State<ImagesCarousel> {
                   decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                     borderRadius: const BorderRadius.all(
-                      Radius.circular(3),
+                      Radius.circular(3.0),
                     ),
                     color: _index == i ? Colors.white.withOpacity(0.8) : Colors.grey.withOpacity(0.3),
                   ),

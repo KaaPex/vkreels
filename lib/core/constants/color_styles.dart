@@ -56,6 +56,26 @@ class VKIcon {
   static Style get tertiaryAlpha => const Style(dark: whiteAlpha24, light: blackAlpha24);
 }
 
+class VKButton {
+  static Style get buttonBotShadow => const Style(dark: gray900, light: gray200);
+  static Style get buttonCommerceBackground => const Style(dark: green, light: green);
+  static Style get buttonCommerceForeground => const Style(dark: white, light: white);
+  static Style get buttonMutedBackground => const Style(dark: gray800, light: gray040);
+  static Style get buttonMutedForeground => const Style(dark: gray100, light: azure300);
+  static Style get buttonOutlineBorder => const Style(dark: gray100, light: azure300);
+  static Style get buttonOutlineForeground => const Style(dark: gray100, light: azure300);
+  static Style get buttonPrimaryForeground => const Style(dark: gray900, light: white);
+  static Style get buttonPrimaryBackground => const Style(dark: gray100, light: azureA400);
+  static Style get buttonSecondaryForeground => const Style(dark: gray100, light: azure300);
+  static Style get buttonSecondaryBackground => const Style(dark: gray700, light: blackBlue24);
+  static Style get buttonSecondaryDestructiveBackground => const Style(dark: gray700, light: blackBlue24);
+  static Style get buttonSecondaryDestructiveBackgroundHighlighted => const Style(dark: gray700, light: blackBlue24);
+  static Style get buttonSecondaryDestructiveForeground => const Style(dark: redLight, light: red);
+  static Style get buttonSecondaryDestructiveForegroundHighlighted => const Style(dark: redLight60, light: red60);
+  static Style get buttonTertiaryBackground => const Style(dark: clear, light: clear);
+  static Style get buttonTertiaryForeground => const Style(dark: gray100, light: azureA400);
+}
+
 class VKCommon {}
 
 class VkContent {
