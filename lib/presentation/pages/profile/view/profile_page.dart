@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vk_reels/core/icons/custom_icons.dart';
+import 'package:vk_reels/data/repository/vk_sdk_repository.dart';
 import 'package:vk_reels/logic/bloc/bloc.dart';
-import 'package:vk_reels/logic/cubit/cubit.dart';
 import 'package:vk_reels/presentation/screens/screens.dart';
 import 'package:vk_reels/presentation/widgets/widgets.dart';
 
@@ -23,7 +23,6 @@ class _ProfilePageState extends State<ProfilePage> {
     final userId = context.read<ProfileBloc>().state.profile.userId;
     if (userId != widget.id) {
       context.read<ProfileBloc>().add(ProfileDataRequested(widget.id));
-      context.read<WallCubit>().getUserPosts(widget.id);
     }
   }
 
@@ -103,7 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        BlocBuilder<WallCubit, WallState>(
+                                        BlocBuilder<WallBloc, WallState>(
                                           builder: (_, state) {
                                             return buildStatColumn(state.count, t.profilePosts);
                                           },
@@ -150,7 +149,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         ],
                       ),
                     ),
-                    PostsList(id: widget.id),
+                    BlocProvider<WallBloc>(
+                      create: (context) =>
+                          WallBloc(vkSdkRepository: context.read<VkSdkRepository>())..add(WallFetched(widget.id)),
+                      child: PostsList(id: widget.id),
+                    ),
                   ],
                 ),
               );

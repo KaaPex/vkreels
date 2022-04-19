@@ -50,6 +50,8 @@ dependencies:
   carousel_slider: ^4.0.0
   just_audio: ^0.9.20
   audio_session: ^0.1.6+1
+  bloc_concurrency: ^0.2.0
+  stream_transform: ^2.0.0
 
 dev_dependencies:
   flutter_test:

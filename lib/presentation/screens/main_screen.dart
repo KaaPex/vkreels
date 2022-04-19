@@ -7,8 +7,6 @@ import 'package:vk_reels/data/repository/vk_sdk_repository.dart';
 import 'package:vk_reels/logic/bloc/authentication/authentication_bloc.dart';
 import 'package:vk_reels/logic/bloc/bloc.dart';
 import 'package:vk_reels/logic/cubit/cubit.dart';
-import 'package:vk_reels/logic/cubit/internet_cubit.dart';
-import 'package:vk_reels/logic/cubit/navigation_cubit.dart';
 import 'package:vk_reels/presentation/pages/pages.dart';
 
 import '../router/app_router.dart';
@@ -82,10 +80,7 @@ class _MainScreenState extends State<MainScreen> {
         ),
         BlocProvider<ProfileBloc>(
           create: (context) => ProfileBloc(vkSdkRepository: context.read<VkSdkRepository>()),
-        ),
-        BlocProvider<WallCubit>(
-          create: (context) => WallCubit(vkSdkRepository: context.read<VkSdkRepository>()),
-        ),
+        )
       ],
       child: Scaffold(
         body: PageView(

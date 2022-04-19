@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vk_reels/logic/cubit/cubit.dart';
 import 'package:vk_reels/presentation/widgets/post_card.dart';
 
+import '../../logic/bloc/wall/wall_bloc.dart';
 import 'bottom_loader.dart';
 
 class PostsList extends StatefulWidget {
@@ -20,25 +20,32 @@ class _PostsListState extends State<PostsList> {
   @override
   void initState() {
     super.initState();
-    context.read<WallCubit>().getUserPosts(widget.id);
     _scrollController.addListener(_onScroll);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WallCubit, WallState>(
+    return BlocBuilder<WallBloc, WallState>(
       builder: (context, state) {
-        return state.posts.isNotEmpty
-            ? ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-                  return index >= state.posts.length ? const BottomLoader() : PostCard(post: state.posts[index]);
-                },
-                itemCount: state.hasReachedMax ? state.posts.length : state.posts.length + 1,
-                controller: _scrollController,
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-              )
-            : const Center(child: CircularProgressIndicator());
+        switch (state.status) {
+          case WallStatus.failure:
+            return const Center(child: Text('failed to fetch posts'));
+          case WallStatus.success:
+            if (state.posts.isEmpty) {
+              return const Center(child: Text('no posts'));
+            }
+            return ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                return index >= state.posts.length ? const BottomLoader() : PostCard(post: state.posts[index]);
+              },
+              itemCount: state.hasReachedMax ? state.posts.length : state.posts.length + 1,
+              controller: _scrollController,
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+            );
+          default:
+            return const Center(child: CircularProgressIndicator());
+        }
       },
     );
   }
@@ -52,7 +59,7 @@ class _PostsListState extends State<PostsList> {
   }
 
   void _onScroll() {
-    if (_isBottom) context.read<WallCubit>().getUserPosts(widget.id);
+    if (_isBottom) context.read<WallBloc>().add(WallFetched(widget.id));
   }
 
   bool get _isBottom {

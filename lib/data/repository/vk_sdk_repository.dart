@@ -46,7 +46,7 @@ class VkSdkRepository {
     }
   }
 
-  VKPost _fillGroupData(VKPost post, List<VKUserProfile?>? profiles, List<VKGroup?>? groups) {
+  VKPost _fillAdditionalData(VKPost post, List<VKUserProfile?>? profiles, List<VKGroup?>? groups) {
     final VKUserProfile? profile = profiles?.firstWhere(
       (element) => element?.userId == post.ownerId.abs(),
       orElse: () => null,
@@ -57,7 +57,7 @@ class VkSdkRepository {
     );
 
     final List<VKPost> filledReposts = [];
-    post.copyHistory?.forEach((repost) => filledReposts.add(_fillGroupData(repost, profiles, groups)));
+    post.copyHistory?.forEach((repost) => filledReposts.add(_fillAdditionalData(repost, profiles, groups)));
 
     return post.copyWith(
       profile: profile,
@@ -95,7 +95,7 @@ class VkSdkRepository {
       final List<VKPost> filledItems = [];
       for (var item in data.items) {
         filledItems.add(
-          _fillGroupData(item, data.profiles, data.groups),
+          _fillAdditionalData(item, data.profiles, data.groups),
         );
       }
 
