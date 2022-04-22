@@ -3,6 +3,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vk_reels/logic/cubit/settings_cubit.dart';
 
+import '../../core/constants/colors.dart';
+import '../../logic/bloc/bloc.dart';
+
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -84,7 +87,34 @@ class SettingsScreen extends StatelessWidget {
                     value: state.appNotifications,
                     onChanged: (bool value) => settingsCubitContext.read<SettingsCubit>().setAppNotification(value),
                     // secondary: const Icon(Icons.lightbulb_outline),
-                  )
+                  ),
+                  // Flexible(
+                  //   child: Container(),
+                  //   flex: 1,
+                  // ),
+                  BlocBuilder<LoginBloc, LoginState>(
+                    builder: (context, state) {
+                      return InkWell(
+                        onTap: () {
+                          context.read<LoginBloc>().add(const LogoutButtonPressed());
+                        },
+                        child: Container(
+                          child: Text(t.logout),
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(vertical: 12.0),
+                          decoration: const ShapeDecoration(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(4),
+                              ),
+                            ),
+                            color: blueColor,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               );
             },

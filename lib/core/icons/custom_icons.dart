@@ -27,4 +27,5 @@ class CustomIcons {
   static const IconData unlockOutline_16 = IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData onlineMobile_16 = IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData onlineOutline_16 = IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData newsFeed_24 = IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

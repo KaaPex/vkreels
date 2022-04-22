@@ -4,12 +4,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vk_reels/core/constants/enums.dart';
 import 'package:vk_reels/core/themes/app_theme.dart';
-import 'package:vk_reels/logic/bloc/authentication/authentication_bloc.dart';
-import 'package:vk_reels/logic/cubit/internet_cubit.dart';
-import 'package:vk_reels/logic/cubit/settings_cubit.dart';
 import 'package:vk_reels/presentation/router/app_router.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'data/repository/vk_sdk_repository.dart';
+import 'logic/bloc/bloc.dart';
+import 'logic/cubit/cubit.dart';
 
 class App extends StatelessWidget {
   final Connectivity connectivity;
@@ -29,6 +28,9 @@ class App extends StatelessWidget {
           ),
           BlocProvider<AuthenticationBloc>(
             create: (settingsCubitContext) => AuthenticationBloc(vkSdkRepository: vkSdkRepository),
+          ),
+          BlocProvider<LoginBloc>(
+            create: (context) => LoginBloc(vkSdkRepository: vkSdkRepository),
           ),
           BlocProvider<SettingsCubit>(
             create: (settingsCubitContext) => SettingsCubit(),

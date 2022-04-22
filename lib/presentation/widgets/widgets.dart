@@ -6,3 +6,4 @@ export 'link_text_span.dart';
 export 'images_carousel.dart';
 export 'rich_text_span.dart';
 export 'audio_player/audio_player.dart';
+export 'video_player/video_player.dart';

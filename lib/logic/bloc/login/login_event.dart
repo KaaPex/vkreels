@@ -15,6 +15,8 @@ class LoginButtonPressed extends LoginEvent {
 }
 
 class LogoutButtonPressed extends LoginEvent {
+  const LogoutButtonPressed();
+
   @override
   String toString() => 'LogoutButtonPressed';
 }

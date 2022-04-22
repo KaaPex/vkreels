@@ -82,7 +82,6 @@ class _PostCardState extends State<PostCard> {
   }
 
   Widget _getImage(VKPost post) {
-    // TODO: decide with image index take
     if (post.attachments != null && post.attachments?.isNotEmpty == true) {
       final attachments = post.attachments;
       try {
@@ -94,17 +93,6 @@ class _PostCardState extends State<PostCard> {
             photos: photos,
           );
         }
-
-        final itemVideo =
-            attachments?.firstWhere((element) => element?.type == VKAttachmentType.video, orElse: () => null);
-        if (itemVideo != null) {
-          final index = itemVideo.video!.image != null ? itemVideo.video!.image!.length - 1 : 0;
-          final String url = itemVideo.video!.image![index].url;
-          return Image.network(
-            url,
-            fit: BoxFit.cover,
-          );
-        }
       } catch (error) {
         print(error);
       }
@@ -112,7 +100,7 @@ class _PostCardState extends State<PostCard> {
     return const SizedBox.shrink();
   }
 
-  Widget _getPlayer(VKPost post) {
+  Widget _getAudioPlayer(VKPost post) {
     if (post.attachments != null && post.attachments?.isNotEmpty == true) {
       final attachments = post.attachments;
       final itemAudio =
@@ -146,9 +134,26 @@ class _PostCardState extends State<PostCard> {
     return const SizedBox.shrink();
   }
 
+  Widget _getVideoPlayer(VKPost post) {
+    if (post.attachments != null && post.attachments?.isNotEmpty == true) {
+      final attachments = post.attachments;
+      try {
+        final itemVideo =
+            attachments?.firstWhere((element) => element?.type == VKAttachmentType.video, orElse: () => null);
+        if (itemVideo != null) {
+          return VideoPlayerWidget(video: itemVideo.video!);
+        }
+      } catch (error) {
+        print(error);
+      }
+    }
+    return const SizedBox.shrink();
+  }
+
   _buildPostContext(VKPost post) {
     final postImage = _getImage(post);
-    final postPlayer = _getPlayer(post);
+    final postAudioPlayer = _getAudioPlayer(post);
+    final postVideoPlayer = _getVideoPlayer(post);
 
     Widget postText = const SizedBox.shrink();
     if (postImage is SizedBox && post.text != null) {
@@ -168,7 +173,8 @@ class _PostCardState extends State<PostCard> {
       children: [
         postText,
         postImage,
-        postPlayer,
+        postAudioPlayer,
+        postVideoPlayer,
       ],
     );
   }

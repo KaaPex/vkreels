@@ -7,6 +7,7 @@ import 'package:vk_reels/data/repository/vk_sdk_repository.dart';
 import 'package:vk_reels/logic/bloc/authentication/authentication_bloc.dart';
 import 'package:vk_reels/logic/bloc/bloc.dart';
 import 'package:vk_reels/logic/cubit/cubit.dart';
+import 'package:vk_reels/presentation/pages/feed/feed.dart';
 import 'package:vk_reels/presentation/pages/pages.dart';
 
 import '../router/app_router.dart';
@@ -51,7 +52,7 @@ class _MainScreenState extends State<MainScreen> {
         return AppRouter.profile;
       case 0:
       default:
-        return AppRouter.stories;
+        return AppRouter.feed;
     }
   }
 
@@ -65,7 +66,7 @@ class _MainScreenState extends State<MainScreen> {
         return 3;
       case AppRouter.profile:
         return 4;
-      case AppRouter.stories:
+      case AppRouter.feed:
       default:
         return 0;
     }
@@ -85,7 +86,7 @@ class _MainScreenState extends State<MainScreen> {
       child: Scaffold(
         body: PageView(
           children: [
-            const StoriesPage(),
+            const FeedPage(),
             Container(),
             BlocBuilder<InternetCubit, InternetState>(
               builder: (context, state) {
@@ -132,10 +133,16 @@ class _MainScreenState extends State<MainScreen> {
               items: const [
                 BottomNavigationBarItem(
                   icon: Icon(
-                    CustomIcons.storyOutline_24,
+                    CustomIcons.newsFeed_24,
                   ),
                   label: '',
                 ),
+                // BottomNavigationBarItem(
+                //   icon: Icon(
+                //     CustomIcons.storyOutline_24,
+                //   ),
+                //   label: '',
+                // ),
                 BottomNavigationBarItem(
                   icon: Icon(
                     CustomIcons.search_24,

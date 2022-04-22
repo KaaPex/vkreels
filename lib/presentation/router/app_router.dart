@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:vk_reels/presentation/pages/feed/feed.dart';
 import '../pages/pages.dart';
 import '../screens/screens.dart';
 
 class AppRouter {
   static const String main = MainScreen.routeName;
-  static const String stories = '/stories';
+  static const String feed = FeedPage.routeName;
+  static const String stories = StoriesPage.routeName;
   static const String story = StoryDetailPage.routeName;
   static const String search = '/search';
   static const String addStory = '/addStory';
   static const String favorites = '/favorites';
-  static const String profile = '/profile';
+  static const String profile = ProfilePage.routeName;
   static const String settings = SettingsScreen.routeName;
   static const String login = LoginScreen.routeName;
   static const String logo = LogoScreen.routeName;

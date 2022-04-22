@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
 /// Displays the play/pause button and volume/speed sliders.
-class ControlButtons extends StatelessWidget {
+class AudioControlButtons extends StatelessWidget {
   final AudioPlayer player;
 
-  const ControlButtons({Key? key, required this.player}) : super(key: key);
+  const AudioControlButtons({Key? key, required this.player}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

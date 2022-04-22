@@ -16,6 +16,7 @@
     "description": ""
   },
   "login": "Войти",
+  "logout": "Выйти",
   "profilePosts": "постов",
   "profileNotes": "заметок",
   "profileFollowers": "подписчиков",

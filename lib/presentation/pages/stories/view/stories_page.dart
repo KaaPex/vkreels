@@ -7,6 +7,12 @@ import 'package:vk_reels/presentation/widgets/posts_list.dart';
 class StoriesPage extends StatelessWidget {
   const StoriesPage({Key? key}) : super(key: key);
 
+  static const routeName = '/stories';
+
+  static Route route() {
+    return MaterialPageRoute<void>(builder: (_) => const StoriesPage());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

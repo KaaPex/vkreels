@@ -16,6 +16,7 @@
     "description": ""
   },
   "login": "Log in",
+  "logout": "Log out",
   "profilePosts": "posts",
   "profileNotes": "notes",
   "profileFollowers": "followers",

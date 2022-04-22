@@ -106,7 +106,7 @@ class VkSdkRepository {
   }
 
   Future<Result<List<VKAudio>>> getAudioById(String audioIds) async {
-    if (!_sdkInitialized || audioIds == null || audioIds.isEmpty) {
+    if (!_sdkInitialized || audioIds.isEmpty) {
       return Result.value(List.empty());
     }
 
@@ -121,6 +121,35 @@ class VkSdkRepository {
             )
             .toList();
         return Result.value(data);
+      } else {
+        return Result.error(res);
+      }
+    } catch (error) {
+      return Result.error(error);
+    }
+  }
+
+  Future<Result<VKVideo>> getVideoById({required int? ownerId, required int? videoId, String? accessKey}) async {
+    if (!_sdkInitialized || videoId == null || ownerId == null) {
+      return Result.value(VKVideo.empty);
+    }
+
+    String videoKey = '${ownerId}_$videoId';
+    if (accessKey != null) {
+      videoKey += '_$accessKey';
+    }
+
+    try {
+      final builder = VkSdk.api.createMethodCall('video.get');
+      builder.setValue('videos', videoKey);
+      final Result res = await builder.callMethod();
+      if (res.isValue) {
+        final data = (res as List<dynamic>)
+            .map(
+              (item) => VKVideo.fromJson(item as Map<String, dynamic>),
+            )
+            .toList();
+        return Result.value(data[0]);
       } else {
         return Result.error(res);
       }
@@ -144,6 +173,7 @@ class VkSdkRepository {
       VKScope.email,
       VKScope.audio,
       VKScope.video,
+      VKScope.stories,
     ]);
 
     if (res.isError) {

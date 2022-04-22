@@ -12,6 +12,12 @@ class ProfilePage extends StatefulWidget {
 
   final int? id;
 
+  static const routeName = '/profile';
+
+  static Route route() {
+    return MaterialPageRoute<void>(builder: (_) => const ProfilePage());
+  }
+
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
@@ -67,94 +73,97 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ],
                 ),
-                body: ListView(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Stack(
-                                children: [
-                                  Avatar(
-                                    radius: 35.0,
-                                    backgroundImage: profile.photo100 != null ? NetworkImage(profile.photo100!) : null,
-                                  ),
-                                  Positioned(
-                                    bottom: 3,
-                                    left: 55,
-                                    child: profile.online || profile.onlineMobile
-                                        ? Icon(
-                                            profile.online ? CustomIcons.onlineOutline_16 : CustomIcons.onlineMobile_16,
-                                            color: Colors.greenAccent,
-                                            size: 9,
-                                          )
-                                        : Container(),
-                                  )
-                                ],
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        BlocBuilder<WallBloc, WallState>(
-                                          builder: (_, state) {
-                                            return buildStatColumn(state.count, t.profilePosts);
-                                          },
-                                        ),
-                                        buildStatColumn(profile.counters?.notes ?? 0, t.profileNotes),
-                                        buildStatColumn(profile.counters?.followers ?? 0, t.profileFollowers),
-                                        buildStatColumn(
-                                            (profile.counters?.subscriptions ?? 0) + (profile.counters?.pages ?? 0),
-                                            t.profileFollowing),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 6),
-                            child: Column(
+                body: BlocProvider<WallBloc>(
+                  create: (context) =>
+                      WallBloc(vkSdkRepository: context.read<VkSdkRepository>())..add(WallFetched(widget.id)),
+                  child: ListView(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          children: [
+                            Row(
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                                Stack(
                                   children: [
-                                    Text('${profile.firstName} ${profile.lastName}'),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        '${profile.statusAudio ?? profile.status}',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.w300,
-                                          fontSize: 12,
-                                        ),
-                                      ),
+                                    Avatar(
+                                      radius: 35.0,
+                                      backgroundImage:
+                                          profile.photo100 != null ? NetworkImage(profile.photo100!) : null,
                                     ),
+                                    Positioned(
+                                      bottom: 3,
+                                      left: 55,
+                                      child: profile.online || profile.onlineMobile
+                                          ? Icon(
+                                              profile.online
+                                                  ? CustomIcons.onlineOutline_16
+                                                  : CustomIcons.onlineMobile_16,
+                                              color: Colors.greenAccent,
+                                              size: 9,
+                                            )
+                                          : Container(),
+                                    )
                                   ],
                                 ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          BlocBuilder<WallBloc, WallState>(
+                                            builder: (_, state) {
+                                              return buildStatColumn(state.count, t.profilePosts);
+                                            },
+                                          ),
+                                          buildStatColumn(profile.counters?.notes ?? 0, t.profileNotes),
+                                          buildStatColumn(profile.counters?.followers ?? 0, t.profileFollowers),
+                                          buildStatColumn(
+                                              (profile.counters?.subscriptions ?? 0) + (profile.counters?.pages ?? 0),
+                                              t.profileFollowing),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
-                          ),
-                        ],
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 6),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text('${profile.firstName} ${profile.lastName}'),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          '${profile.statusAudio ?? profile.status}',
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w300,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    BlocProvider<WallBloc>(
-                      create: (context) =>
-                          WallBloc(vkSdkRepository: context.read<VkSdkRepository>())..add(WallFetched(widget.id)),
-                      child: PostsList(id: widget.id),
-                    ),
-                  ],
+                      PostsList(id: widget.id),
+                    ],
+                  ),
                 ),
               );
       },

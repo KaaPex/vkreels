@@ -117,7 +117,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
                   ),
                   SizedBox(
                     height: 12.0,
-                    child: ControlButtons(player: _player),
+                    child: AudioControlButtons(player: _player),
                   ),
                   SizedBox(
                     height: 20.0,
